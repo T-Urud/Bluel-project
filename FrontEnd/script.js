@@ -40,9 +40,11 @@ const flatBtn = document.getElementById("flats");
 const hotelBtn = document.getElementById("hotel&Resto");
 const filterBtns = document.querySelectorAll(".filterBtn");
 
+// avoir effet hover qui reste quand on click le btn
 filterBtns.forEach((button) => {
   button.addEventListener("click", () => {
-    button.classList.toggle("active");
+    document.querySelector(".active")?.classList.remove("active");
+    button.classList.add("active");
   });
 });
 
