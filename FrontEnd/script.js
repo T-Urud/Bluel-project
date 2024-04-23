@@ -17,21 +17,20 @@ function projectsDisplay() {
         <figcaption>${projects[i].title}</figcaption>
       </figure>
     `;
+    // const project = projects[i];
+    // const projectElement = document.createElement("figure");
+    // projectElement.dataset.id = projects[i].id;
+    // const imgElement = document.createElement("img");
+    // imgElement.src = project.imageUrl;
+    // const captionElement = document.createElement("figcaption");
+    // captionElement.innerText = project.title;
+
+    // gallery.appendChild(projectElement);
+    // projectElement.appendChild(imgElement);
+    // projectElement.appendChild(captionElement);
   }
 }
-projectsDisplay();
-
-// const projectsData = await fetch("http://localhost:5678/api/works");
-// const project = await projectsData.json();
-
-// function projectsDisplay(project) {
-//   for (let i = 0; i < project.length; i++) {
-//     figureElement = document.createElement("figure");
-//     figureElement.innerHTML = `<img src="${project[i].imageUrl}" alt=${project[i].title}> <figcaption>${project[i].title}</figcaption>`;
-//     gallery.appendChild(figureElement);
-//   }
-// }
-// projectsDisplay(project);
+projectsDisplay(projects);
 
 // ----- BTN -----
 
@@ -39,17 +38,62 @@ const allBtn = document.getElementById("all");
 const objectBtn = document.getElementById("object");
 const flatBtn = document.getElementById("flats");
 const hotelBtn = document.getElementById("hotel&Resto");
+const filterBtns = document.querySelectorAll(".filterBtn");
+
+filterBtns.forEach((button) => {
+  button.addEventListener("click", () => {
+    button.classList.toggle("active");
+  });
+});
+
+allBtn.addEventListener("click", () => {
+  gallery.innerHTML = "";
+  projectsDisplay();
+});
 
 objectBtn.addEventListener("click", () => {
-  const ex = projects[5].id;
-  console.log(ex);
   const objectsProject = projects.filter((project) => {
-    return (project.category.id = 1);
+    return project.category.id == 1;
   });
-
-  console.log(objectsProject);
   gallery.innerHTML = "";
-  projectsDisplay(objectsProject);
+  for (let i = 0; i < objectsProject.length; i++) {
+    gallery.innerHTML += `
+      <figure>
+        <img src="${objectsProject[i].imageUrl}" alt=${objectsProject[i].title}>
+        <figcaption>${objectsProject[i].title}</figcaption>
+      </figure>
+    `;
+  }
+});
+
+flatBtn.addEventListener("click", () => {
+  const flatsProject = projects.filter((project) => {
+    return project.category.id == 2;
+  });
+  gallery.innerHTML = "";
+  for (let i = 0; i < flatsProject.length; i++) {
+    gallery.innerHTML += `
+      <figure>
+        <img src="${flatsProject[i].imageUrl}" alt=${flatsProject[i].title}>
+        <figcaption>${flatsProject[i].title}</figcaption>
+      </figure>
+    `;
+  }
+});
+
+hotelBtn.addEventListener("click", () => {
+  const hotelsProject = projects.filter((project) => {
+    return project.category.id == 3;
+  });
+  gallery.innerHTML = "";
+  for (let i = 0; i < hotelsProject.length; i++) {
+    gallery.innerHTML += `
+      <figure>
+        <img src="${hotelsProject[i].imageUrl}" alt=${hotelsProject[i].title}>
+        <figcaption>${hotelsProject[i].title}</figcaption>
+      </figure>
+    `;
+  }
 });
 
 window.addEventListener("load", fetchProjects);

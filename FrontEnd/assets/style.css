@@ -148,6 +148,10 @@ button:hover{
 	background: #1D6154;
 	color: white;
 }
+.active{
+	background: #1D6154;
+	color: white;
+}
 
 .gallery {
 	width: 100%;
