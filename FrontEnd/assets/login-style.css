@@ -81,15 +81,18 @@ label{
 	font-size: 0.8em;
 }
 
-#email,
-#password{
+input[type="email"],
+input[type="password"]{
 	margin-top: 5px;
 	height: 51px;
 	width: 379px;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
-	border: none;
+	border: transparent;
 	outline: none;
 	padding: 10px;
+}
+.error {
+	border: 1px solid #D80D0D !important;
 }
 
 .submitContainer{
