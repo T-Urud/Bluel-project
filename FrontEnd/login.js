@@ -12,13 +12,13 @@ const emailChecker = (value) => {
   } else {
     email = value;
     emailInput.classList.remove("error");
-    console.log(email);
+    // console.log(email);
   }
 };
 
 const passwordChecker = (value) => {
   password = value;
-  console.log(password);
+  // console.log(password);
 };
 
 inputs.forEach((input) => {
@@ -40,20 +40,31 @@ loginForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
   if (email && password) {
-    const data = {
+    const idData = {
       email,
       password,
     };
-    console.log(data);
+    console.log(idData);
 
     // Création de la charge utile au format JSON
-    const chargeUtile = JSON.stringify(data);
+    const chargeUtile = JSON.stringify(idData);
+    console.log(chargeUtile);
     // Appel de la fonction fetch avec toutes les informations nécessaires
     fetch("http://localhost:5678/api/users/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: chargeUtile,
+    }).then((res) => {
+      if (res.status !== 200) {
+        console.log("erreur");
+      } else {
+        res.json();
+      }
     });
+    // .then(data => {
+    //   const token = data.token;
+    //   console.log(token);
+    // });
 
     inputs.forEach((input) => (input.value = ""));
     email = null;
