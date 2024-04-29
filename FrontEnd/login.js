@@ -33,7 +33,6 @@ const submitForm = () => {
     };
     // Création de la charge utile au format JSON
     const chargeUtile = JSON.stringify(userData);
-    console.log(chargeUtile);
     // Appel de la fonction fetch avec toutes les informations nécessaires
     fetch("http://localhost:5678/api/users/login", {
       method: "POST",
@@ -50,7 +49,6 @@ const submitForm = () => {
         const token = data.token;
         sessionStorage.setItem("authToken", token);
         window.location.href = "index.html";
-        console.log(token);
       })
       .catch(() => {
         alert("Une erreur s'est produite. Veuillez réessayer plus tard.");

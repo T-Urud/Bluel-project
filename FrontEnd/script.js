@@ -98,4 +98,11 @@ hotelBtn.addEventListener("click", () => {
   }
 });
 
+// ----------------- Log  -----------
+
+const logBtn = document.getElementById("loginBtn");
+let token = sessionStorage.getItem("authToken");
+
+console.log(token);
+
 window.addEventListener("load", fetchProjects);
