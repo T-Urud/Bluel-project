@@ -5,8 +5,12 @@ const emailInput = document.getElementById("email");
 const loginForm = document.querySelector("form");
 let email, password;
 
+const validateEmail = (value) => {
+  return value.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/i);
+};
+
 const emailChecker = (value) => {
-  if (!value.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/i)) {
+  if (!validateEmail(value)) {
     emailInput.classList.add("error");
     email = null;
   } else {
@@ -21,6 +25,41 @@ const passwordChecker = (value) => {
   // console.log(password);
 };
 
+const submitForm = () => {
+  if (email && password) {
+    const userData = {
+      email,
+      password,
+    };
+    // Création de la charge utile au format JSON
+    const chargeUtile = JSON.stringify(userData);
+    console.log(chargeUtile);
+    // Appel de la fonction fetch avec toutes les informations nécessaires
+    fetch("http://localhost:5678/api/users/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: chargeUtile,
+    })
+      .then((res) => {
+        if (!res.ok) {
+          console.log("erreur");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        const token = data.token;
+        sessionStorage.setItem("authToken", token);
+        window.location.href = "index.html";
+        console.log(token);
+      })
+      .catch(() => {
+        alert("Une erreur s'est produite. Veuillez réessayer plus tard.");
+      });
+  } else {
+    alert("Veuillez remplir tous les champs");
+  }
+};
+
 inputs.forEach((input) => {
   input.addEventListener("input", (e) => {
     switch (e.target.id) {
@@ -30,46 +69,13 @@ inputs.forEach((input) => {
       case "password":
         passwordChecker(e.target.value);
         break;
-      default:
-        nul;
+      // default:
+      //   null;
     }
   });
 });
 
 loginForm.addEventListener("submit", (e) => {
   e.preventDefault();
-
-  if (email && password) {
-    const idData = {
-      email,
-      password,
-    };
-    console.log(idData);
-
-    // Création de la charge utile au format JSON
-    const chargeUtile = JSON.stringify(idData);
-    console.log(chargeUtile);
-    // Appel de la fonction fetch avec toutes les informations nécessaires
-    fetch("http://localhost:5678/api/users/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: chargeUtile,
-    }).then((res) => {
-      if (res.status !== 200) {
-        console.log("erreur");
-      } else {
-        res.json();
-      }
-    });
-    // .then(data => {
-    //   const token = data.token;
-    //   console.log(token);
-    // });
-
-    inputs.forEach((input) => (input.value = ""));
-    email = null;
-    password = null;
-  } else {
-    alert("Veuillez remplir correctement les champs");
-  }
+  submitForm();
 });
