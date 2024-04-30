@@ -1,5 +1,6 @@
 const gallery = document.querySelector(".gallery");
 let projects = [];
+let token = sessionStorage.getItem("authToken");
 
 async function fetchProjects() {
   await fetch("http://localhost:5678/api/works").then((res) =>
@@ -17,17 +18,6 @@ function projectsDisplay() {
         <figcaption>${projects[i].title}</figcaption>
       </figure>
     `;
-    // const project = projects[i];
-    // const projectElement = document.createElement("figure");
-    // projectElement.dataset.id = projects[i].id;
-    // const imgElement = document.createElement("img");
-    // imgElement.src = project.imageUrl;
-    // const captionElement = document.createElement("figcaption");
-    // captionElement.innerText = project.title;
-
-    // gallery.appendChild(projectElement);
-    // projectElement.appendChild(imgElement);
-    // projectElement.appendChild(captionElement);
   }
 }
 projectsDisplay(projects);
@@ -101,7 +91,12 @@ hotelBtn.addEventListener("click", () => {
 // ----------------- Log  -----------
 
 const logBtn = document.getElementById("loginBtn");
-let token = sessionStorage.getItem("authToken");
+
+function edit() {
+  if (token) {
+    logBtn.style.color = "red";
+  }
+}
 
 console.log(token);
 
