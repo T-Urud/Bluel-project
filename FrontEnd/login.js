@@ -80,9 +80,11 @@
 // submitForm();
 // });
 
+// -----------------------------------------------------------------
+
 const login = () => {
   const loginForm = document.querySelector("form");
-  loginForm.addEventListener("submit", (e) => {
+  loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const user = {
@@ -94,7 +96,7 @@ const login = () => {
     // Création de la charge utile au format JSON ------
     const chargeUtile = JSON.stringify(user);
     // Appel de la fonction fetch avec toutes les informations nécessaires ------
-    fetch("http://localhost:5678/api/users/login", {
+    const res = await fetch("http://localhost:5678/api/users/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: chargeUtile,
@@ -117,3 +119,36 @@ const login = () => {
   });
 };
 login();
+
+// -----------------------------------------------------------------
+
+// const loginForm = document.querySelector("form");
+
+// loginForm.addEventListener("submit", async (e) => {
+//   e.preventDefault();
+//   const user = {
+//     email: e.target.querySelector("[name=E-mail]").value,
+//     password: e.target.querySelector("[name=mdp]").value,
+//   };
+//   const chargeUtile = JSON.stringify(user);
+
+//   try {
+//     const response = await fetch("http://localhost:5678/api/users/login", {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: chargeUtile,
+//     });
+
+//     if (response.ok) {
+//       const data = await response.json();
+
+//       const token = data.token;
+//       window.sessionStorage.setItem("authToken", token);
+//       window.location.href = "index.html";
+//     } else {
+//       console.log("error");
+//     }
+//   } catch (error) {
+//     alert("erreur!!");
+//   }
+// });
