@@ -91,13 +91,19 @@ hotelBtn.addEventListener("click", () => {
 // ----------------- Log  -----------
 
 const logBtn = document.getElementById("loginBtn");
+const editGallery = document.querySelector(".modifLog");
 
 function edit() {
   if (token) {
-    logBtn.style.color = "red";
+    logBtn.textContent = "logout";
+    logBtn.style.cursor = "pointer";
+
+    document.querySelector(".black").style.visibility = "visible";
+    editGallery.style.display = "block";
+    document.querySelector(".btnContainer").style.visibility = "hidden";
   }
 }
-
+edit();
 console.log(token);
 
 window.addEventListener("load", fetchProjects);
