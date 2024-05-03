@@ -29,10 +29,10 @@ const submitForm = () => {
       email,
       password,
     };
-    // Création de la charge utile au format JSON ------
+    // Création de la charge utile au format JSON
     const chargeUtile = JSON.stringify(userData);
     console.log(chargeUtile);
-    // Appel de la fonction fetch avec toutes les informations nécessaires ------
+    // Appel de la fonction fetch avec toutes les informations nécessaires
     fetch("http://localhost:5678/api/users/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -41,14 +41,14 @@ const submitForm = () => {
       .then((res) => {
         if (!res.ok) {
           alert("Erreur");
+        } else {
+          res.json().then((data) => {
+            console.log(data);
+            const token = data.token;
+            sessionStorage.setItem("authToken", token);
+            window.location.href = "index.html";
+          });
         }
-        return res.json();
-      })
-      .then((data) => {
-        console.log(data);
-        const token = data.token;
-        sessionStorage.setItem("authToken", token);
-        // window.location.href = "index.html"; --------
       })
       .catch(() => {
         alert("Une erreur s'est produite. Veuillez réessayer plus tard.");
@@ -67,8 +67,6 @@ inputs.forEach((input) => {
       case "password":
         passwordChecker(e.target.value);
         break;
-      // default: --------
-      //   null; -------
     }
   });
 });
@@ -77,76 +75,3 @@ loginForm.addEventListener("submit", (e) => {
   e.preventDefault();
   submitForm();
 });
-
-// -----------------------------------------------------------------
-
-// const login = () => {
-//   const loginForm = document.querySelector("form");
-//   loginForm.addEventListener("submit", async (e) => {
-//     e.preventDefault();
-
-//     const user = {
-//       email: e.target.querySelector("[name=E-mail]").value,
-//       password: e.target.querySelector("[name=mdp]").value,
-//     };
-//     console.log(user);
-
-// Création de la charge utile au format JSON ------
-// const chargeUtile = JSON.stringify(user);
-// Appel de la fonction fetch avec toutes les informations nécessaires ------
-// const res = await fetch("http://localhost:5678/api/users/login", {
-//   method: "POST",
-//   headers: { "Content-Type": "application/json" },
-//   body: chargeUtile,
-// })
-//   .then((res) => {
-//     if (!res.status !== 200) {
-//       alert("Erreur");
-//     }
-//     return res.json();
-//   })
-//   .then((data) => {
-//     console.log(data);
-//     const token = data.token;
-//     sessionStorage.setItem("authToken", token);
-// window.location.href = "index.html";
-//       })
-//       .catch((err) => {
-//         alert("une erreur");
-//       });
-//   });
-// };
-// login();
-
-// -----------------------------------------------------------------
-
-// const loginForm = document.querySelector("form");
-
-// loginForm.addEventListener("submit", async (e) => {
-//   e.preventDefault();
-//   const user = {
-//     email: e.target.querySelector("[name=E-mail]").value,
-//     password: e.target.querySelector("[name=mdp]").value,
-//   };
-//   const chargeUtile = JSON.stringify(user);
-
-//   try {
-//     const response = await fetch("http://localhost:5678/api/users/login", {
-//       method: "POST",
-//       headers: { "Content-Type": "application/json" },
-//       body: chargeUtile,
-//     });
-
-//     if (response.ok) {
-//       const data = await response.json();
-
-//       const token = data.token;
-//       window.sessionStorage.setItem("authToken", token);
-//       window.location.href = "index.html";
-//     } else {
-//       console.log("error");
-//     }
-//   } catch (error) {
-//     alert("erreur!!");
-//   }
-// });
