@@ -268,11 +268,10 @@ footer nav ul {
 }
 .galleryContainer{
   position: relative;
-  height: 400px;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 2rem 2%;
-  margin: 0 2rem;
+  margin: 2rem 2rem 3rem;
 }
 .galleryContainer::after{
 content: "";
@@ -280,17 +279,16 @@ position: absolute;
 width: 100%;
 height: 1px;
 background: rgb(179, 179, 179);
-bottom: -50px;
+bottom: -5%;
 }
 aside h2{
   text-align: center;
-  margin-bottom: 2em;
 }
-button{
+#modalBtn{
   font-weight: 700;
 	color: #fff;
 	background-color: #1D6154;
-	margin : 6em auto 0;
+	margin : 0 auto ;
 	width: 237px;
 	height: 36px;
 	border-radius: 60px ;
@@ -301,7 +299,12 @@ button:hover{
   cursor: pointer;
 }
 
-.tst{
-  background: #00000063;
-  /* width: 19%; */
+.projectPhoto{
+	width: 100%;
+}
+
+.projectPhoto img{
+	object-fit: cover;
+	width: 100%;
+	height: 100%;
 }

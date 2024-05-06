@@ -8,6 +8,7 @@ async function fetchProjects() {
   );
   console.log(projects);
   projectsDisplay();
+  modalGalleryDisplay();
 }
 
 function projectsDisplay() {
@@ -147,6 +148,17 @@ window.addEventListener("keydown", (e) => {
     closeModal(e);
   }
 });
+
+const modalGalleryDisplay = () => {
+  for (let i = 0; i < projects.length; i++) {
+    document.querySelector(".galleryContainer").innerHTML += `
+      <figure class="projectPhoto">
+        <img src="${projects[i].imageUrl}" alt=${projects[i].title}>
+      </figure>
+    `;
+  }
+};
+modalGalleryDisplay(projects);
 
 console.log(token);
 
