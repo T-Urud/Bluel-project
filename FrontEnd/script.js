@@ -149,16 +149,59 @@ window.addEventListener("keydown", (e) => {
   }
 });
 
+// -------------------------------------------------------
+
 const modalGalleryDisplay = () => {
+  const galleryContainer = document.querySelector(".galleryContainer");
   for (let i = 0; i < projects.length; i++) {
-    document.querySelector(".galleryContainer").innerHTML += `
-      <figure class="projectPhoto">
-        <img src="${projects[i].imageUrl}" alt=${projects[i].title}>
-      </figure>
-    `;
+    const projectPhoto = document.createElement("figure");
+    projectPhoto.classList.add("projectPhoto");
+
+    const trashContainer = document.createElement("div");
+    trashContainer.classList.add("trashContainer");
+    trashContainer.innerHTML = `<img src="./assets/icons/trash.svg" alt="trash icon">`;
+
+    const projectImg = document.createElement("img");
+    projectImg.src = projects[i].imageUrl;
+    projectImg.alt = projects[i].title;
+
+    projectPhoto.appendChild(trashContainer);
+    projectPhoto.appendChild(projectImg);
+
+    trashContainer.addEventListener("click", async () => {
+      try {
+        await deleteProject(projects[i].id);
+        projectPhoto.remove();
+        console.log("tst");
+      } catch (error) {
+        console.log("error");
+      }
+    });
+
+    galleryContainer.appendChild(projectPhoto);
   }
 };
-modalGalleryDisplay(projects);
+modalGalleryDisplay();
+
+const deleteProject = (id) => {
+  fetch(`http://localhost:5678/api/works/${id}`, {
+    method: "DELETE",
+    headers: {
+      accept: "*/*",
+      authorization: `Bearer ${token}`,
+    },
+  })
+    .then((res) => {
+      if (res.ok) {
+        console.log("fichier supprimé");
+      } else {
+        alert(`Erreur ${res.status} lors de la tentative`);
+      }
+    })
+    .catch((error) => {
+      alert("une erreur s'est produite");
+    });
+};
 
 console.log(token);
 
