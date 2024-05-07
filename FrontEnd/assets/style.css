@@ -253,19 +253,21 @@ footer nav ul {
   justify-content: center;
 }
 .modalWrapper{
-  background: #fff;
-  height: 688px;
+	background: #fff;
   width: 630px;
   padding: 30px 50px;
 	border-radius: 10px;
-}
+	}
 .closeContainer{
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   margin-bottom: 15px;
 }
 .closeContainer img{
   cursor: pointer;
+}
+#hiddenIcon{
+	visibility: hidden;
 }
 .galleryContainer{
   position: relative;
@@ -330,4 +332,86 @@ button:hover{
 .trashContainer img{
 	width: 90%;
 	height: 90%;
+}
+
+
+/* -- MODAL V2 -- */
+
+.modalV2{
+	display: none;
+}
+
+.formContainer{
+	margin: 2rem auto 3rem;
+	max-width: 420px;
+}
+
+.addPhotoContainer{
+	background: rgba(232, 241, 246);
+	border-radius: 3px;
+	height: 169px;
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 20px;
+}
+#addIcon{
+	font-size: 5em;
+	color: #b9c5cc;
+}
+.addPhotoContainer button{
+	width: 50%;
+	margin: 1em;
+	background: #b9c5cc;
+	border: none;
+	z-index: 0;
+}
+.addPhotoContainer input{
+	cursor: pointer;
+	color: #306685;
+	background: transparent;
+}
+.inputContainer{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 20px 0;
+	margin-bottom: 2em;
+}
+.inputContainer input{
+	width: 100%;
+	height: 51px;
+	box-shadow: 0 4px 14px rgba(0, 0, 0, 0.09);
+	margin: 1em 0 2em;
+	outline: none;
+	padding-left:5px ;
+}
+.inputContainer label{
+	text-align: left;
+	width: 100%;
+}
+.validBtnContainer{
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 2em 0;
+}
+#validBtn{
+	width: 237px;
+	height: 36px;
+	background: #a7a7a7;
+	color: #fff;
+	border: transparent;
+	cursor: default;
+}
+.validBtnContainer::before{
+	content: "";
+	position: absolute;
+	width: 100%;
+	height: 1px;
+	background: rgb(179, 179, 179);
+	top: -100%;
 }

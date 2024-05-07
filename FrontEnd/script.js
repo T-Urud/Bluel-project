@@ -203,6 +203,28 @@ const deleteProject = (id) => {
     });
 };
 
+// --------- change modal page ---------
+
+modalBtn.addEventListener("click", () => {
+  const modalV1 = document.querySelector(".modalV1");
+  modalV1.style.display = "none";
+
+  const modalV2 = document.querySelector(".modalV2");
+  modalV2.style.display = "block";
+
+  hiddenIcon.style.visibility = "visible";
+});
+
+hiddenIcon.addEventListener("click", () => {
+  const modalV1 = document.querySelector(".modalV1");
+  modalV1.style.display = "block";
+
+  const modalV2 = document.querySelector(".modalV2");
+  modalV2.style.display = "none";
+
+  hiddenIcon.style.visibility = "hidden";
+});
+
 console.log(token);
 
 window.addEventListener("load", fetchProjects);
