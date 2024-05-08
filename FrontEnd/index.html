@@ -94,18 +94,30 @@
 				<div class="formContainer">
 					<form action="">
 						<div class="addPhotoContainer">
+							<!-- <img src="#" alt="Preview image" id="previewImage"> -->
 							<p id="addIcon"><i class="fa-regular fa-image"></i></p>
-							<button>
-								<input type="button" value="+ Ajouter photo">
+							<button id="addPhoto">
+								<input type="file" value="+ Ajouter photo" id="fileInput">
 							</button>
 							<p>jpg, png : 4mo max</p>
 						</div>
 						<div class="inputContainer">
 							<label for="title">Titre</label>
-							<input type="text" name="title" id="">
+							<input type="text" name="title" id="titleInput">
 							<label for="category">Catégorie</label>
-							<input type="text">
-							<i class="fa-solid fa-chevron-down"></i>
+							<div class="dropdown">
+								<div class="select">
+									<span class="selected">Objets</span>
+									<div class="caret">
+										<i class="fa-solid fa-chevron-down"></i>
+									</div>
+								</div>
+								<ul class="menu">
+									<li class="actived">Objets</li>
+									<li>Appartements</li>
+									<li>Hotels & restaurants</li>
+								</ul>
+							</div>
 						</div>
 						<div class="validBtnContainer">
 							<button id="validBtn" disabled="disabled">Valider</button>

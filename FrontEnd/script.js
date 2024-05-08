@@ -225,6 +225,38 @@ hiddenIcon.addEventListener("click", () => {
   hiddenIcon.style.visibility = "hidden";
 });
 
+// dropdown category
+const caret = document.querySelector(".caret");
+const menu = document.querySelector(".menu");
+const options = document.querySelectorAll(".menu li");
+const selected = document.querySelector(".selected");
+const validBtnBefore = document.querySelector(".validBtnContainer");
+
+caret.addEventListener("click", () => {
+  caret.classList.toggle("caret-rotate");
+  menu.classList.toggle("menu-open");
+  validBtnBefore.classList.toggle("before-hidden");
+});
+
+options.forEach((option) => {
+  option.addEventListener("click", () => {
+    selected.innerText = option.innerText;
+    caret.classList.remove("caret-rotate");
+    menu.classList.remove("menu-open");
+    validBtnBefore.classList.remove("before-hidden");
+  });
+});
+
+// -------- ADD ELEMENT --------
+
+addPhoto.addEventListener("click", (e) => {
+  e.preventDefault();
+});
+
+titleInput.addEventListener("keypress", (e) => {
+  titleInput = e.target.value;
+});
+console.log(titleInput);
 console.log(token);
 
 window.addEventListener("load", fetchProjects);
