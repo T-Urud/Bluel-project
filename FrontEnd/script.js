@@ -226,13 +226,14 @@ hiddenIcon.addEventListener("click", () => {
 });
 
 // dropdown category
+const select = document.querySelector(".select");
 const caret = document.querySelector(".caret");
 const menu = document.querySelector(".menu");
 const options = document.querySelectorAll(".menu li");
 const selected = document.querySelector(".selected");
 const validBtnBefore = document.querySelector(".validBtnContainer");
 
-caret.addEventListener("click", () => {
+select.addEventListener("click", () => {
   caret.classList.toggle("caret-rotate");
   menu.classList.toggle("menu-open");
   validBtnBefore.classList.toggle("before-hidden");
@@ -249,14 +250,39 @@ options.forEach((option) => {
 
 // -------- ADD ELEMENT --------
 
-addPhoto.addEventListener("click", (e) => {
-  e.preventDefault();
-});
+let photo, title, category;
 
-titleInput.addEventListener("keypress", (e) => {
-  titleInput = e.target.value;
-});
-console.log(titleInput);
+const uploadPhoto = () => {
+  fileInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+
+    if (file && file.size > 4194304) {
+      alert("Le fichier dépasse 4Mo ");
+      e.preventDefault();
+      photo = false;
+    }
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        previewImage.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+      photo = true;
+
+      addIcon.style.display = "none";
+      document.querySelector(".addPhoto").style.display = "none";
+      infoFormat.style.display = "none";
+    }
+  });
+};
+uploadPhoto();
+
+const titleChecker = (value) => {
+  title = value;
+};
+titleChecker();
+
 console.log(token);
 
 window.addEventListener("load", fetchProjects);

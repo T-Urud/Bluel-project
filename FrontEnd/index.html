@@ -10,6 +10,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
+	<link rel="stylesheet" href="./assets/modal-style.css">
 </head>
 
 <body>
@@ -94,12 +95,13 @@
 				<div class="formContainer">
 					<form action="">
 						<div class="addPhotoContainer">
-							<!-- <img src="#" alt="Preview image" id="previewImage"> -->
 							<p id="addIcon"><i class="fa-regular fa-image"></i></p>
-							<button id="addPhoto">
-								<input type="file" value="+ Ajouter photo" id="fileInput">
-							</button>
-							<p>jpg, png : 4mo max</p>
+							<img src="" id="previewImage">
+							<div class="addPhoto">
+								<input type="file" accept=".jpg, .png" id="fileInput">
+								<label for="fileInput" id="addTxt">+ Ajouter photo<label>
+							</div>
+							<p id="infoFormat">jpg, png : 4mo max</p>
 						</div>
 						<div class="inputContainer">
 							<label for="title">Titre</label>
