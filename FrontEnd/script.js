@@ -232,6 +232,7 @@ const menu = document.querySelector(".menu");
 const options = document.querySelectorAll(".menu li");
 const selected = document.querySelector(".selected");
 const validBtnBefore = document.querySelector(".validBtnContainer");
+const categoryInput = document.getElementById("category");
 
 select.addEventListener("click", () => {
   caret.classList.toggle("caret-rotate");
@@ -239,18 +240,34 @@ select.addEventListener("click", () => {
   validBtnBefore.classList.toggle("before-hidden");
 });
 
-options.forEach((option) => {
-  option.addEventListener("click", () => {
-    selected.innerText = option.innerText;
-    caret.classList.remove("caret-rotate");
-    menu.classList.remove("menu-open");
-    validBtnBefore.classList.remove("before-hidden");
+// ---------
+let title, category;
+let photo = false;
+
+const validBtnChange = () => {
+  if (title && photo && category) {
+    validBtn.removeAttribute("disabled");
+    validBtn.style.cursor = "pointer";
+    validBtn.style.background = "#1D6154";
+  } else {
+    validBtn.setAttribute("disabled", "disabled");
+  }
+};
+
+const categoryChoice = () => {
+  options.forEach((option) => {
+    option.addEventListener("click", () => {
+      selected.innerText = option.innerText;
+      caret.classList.remove("caret-rotate");
+      menu.classList.remove("menu-open");
+      validBtnBefore.classList.remove("before-hidden");
+      categoryInput.value = option.innerText;
+      category = option.innerText;
+      validBtnChange();
+    });
   });
-});
-
-// -------- ADD ELEMENT --------
-
-let photo, title, category;
+};
+categoryChoice();
 
 const uploadPhoto = () => {
   fileInput.addEventListener("change", (e) => {
@@ -273,6 +290,8 @@ const uploadPhoto = () => {
       addIcon.style.display = "none";
       document.querySelector(".addPhoto").style.display = "none";
       infoFormat.style.display = "none";
+      document.querySelector(".addPhotoContainer").style.padding = "0 20px";
+      validBtnChange();
     }
   });
 };
@@ -280,8 +299,27 @@ uploadPhoto();
 
 const titleChecker = (value) => {
   title = value;
+  validBtnChange();
 };
-titleChecker();
+
+const inputs = document.querySelectorAll(".js-select");
+
+inputs.forEach((input) => {
+  input.addEventListener("input", (e) => {
+    switch (e.target.id) {
+      case "title":
+        titleChecker(e.target.value);
+        break;
+      case "category":
+        categoryChoice(e.target.value);
+        break;
+    }
+  });
+});
+
+validBtn.addEventListener("submit", (e) => {
+  e.preventDefault();
+});
 
 console.log(token);
 

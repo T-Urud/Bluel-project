@@ -187,6 +187,9 @@ button:hover{
 	color: #fff;
 	border: transparent;
 	cursor: default;
+	font-weight: 700;
+	display: grid;
+	align-items: center;
 }
 .validBtnContainer::before{
 	content: "";
@@ -205,8 +208,6 @@ button:hover{
 	position: relative;
 	margin-top: 1em;
 	width: 100%;
-	padding: 0 5px;
-
 }
 .select{
 	display: flex;
@@ -217,6 +218,9 @@ button:hover{
 	padding: 0 1em;
 	margin-bottom: 0.5em;
 	cursor: pointer;
+}
+.select input{
+  display: none;
 }
 .caret-rotate{
 	transform: rotate(180deg);

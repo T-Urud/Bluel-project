@@ -21,6 +21,7 @@ const emailChecker = (value) => {
 
 const passwordChecker = (value) => {
   password = value;
+  console.log(password);
 };
 
 const submitForm = () => {
