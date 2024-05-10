@@ -253,7 +253,6 @@ const validBtnChange = () => {
     validBtn.setAttribute("disabled", "disabled");
   }
 };
-
 const categoryChoice = () => {
   options.forEach((option) => {
     option.addEventListener("click", () => {
@@ -317,8 +316,29 @@ inputs.forEach((input) => {
   });
 });
 
-validBtn.addEventListener("submit", (e) => {
+const submitProjectForm = () => {
+  if (title && category && photo == true) {
+    const projectData = {
+      photo,
+      title,
+      category,
+    };
+    console.log(projectData);
+    const payload = JSON.stringify(projectData);
+    console.log(payload);
+    // fetch("http://localhost:5678/api/works", {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: payload,
+    // });
+  } else {
+    alert("Veuillez remplir tous les champs");
+  }
+};
+
+addProjectForm.addEventListener("submit", (e) => {
   e.preventDefault();
+  submitProjectForm();
 });
 
 console.log(token);

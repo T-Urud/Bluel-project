@@ -6,7 +6,7 @@
 
 /* MODAL */
 .galleryModal{
-	/* visibility: hidden; */
+	visibility: hidden;
   position: fixed;
 	user-select: none;
   top: 0;
