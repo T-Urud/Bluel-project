@@ -82,9 +82,8 @@ button:hover{
 .trashContainer{
 	background: #000;
 	width: 20px;
-	display: grid;
-	place-content: center;
-	justify-items: center;
+	display: flex;
+	justify-content: center;
 	align-items: center;
 	border-radius: 3px;
 	padding: 2px;
@@ -248,3 +247,8 @@ button:hover{
 	opacity: 1;
 	display: block;
 }
+
+
+
+/* check closeContainer --> on voit tjs quand on ferme la modal */
+/* display none préviligié */

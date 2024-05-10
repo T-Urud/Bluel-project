@@ -116,6 +116,7 @@ const openModal = (e) => {
   target.removeAttribute("aria-hidden");
   target.setAttribute("aria-modal", "true");
   modal = target;
+  document.querySelector(".closeContainer").style.display = "flex";
   modal.addEventListener("click", closeModal);
   modal.querySelector(".closingIcon").addEventListener("click", closeModal);
   modal
@@ -127,6 +128,7 @@ const closeModal = (e) => {
   if (modal === null) return;
   e.preventDefault();
   modal.style.visibility = "hidden";
+  document.querySelector(".closeContainer").style.display = "none";
   modal.setAttribute("aria-hidden", "true");
   modal.removeAttribute("aria-modal");
   modal.removeEventListener("click", closeModal);
@@ -243,6 +245,7 @@ select.addEventListener("click", () => {
 // ---------
 let title, category;
 let photo = false;
+let file = null;
 
 const validBtnChange = () => {
   if (title && photo && category) {
@@ -270,12 +273,13 @@ categoryChoice();
 
 const uploadPhoto = () => {
   fileInput.addEventListener("change", (e) => {
-    const file = e.target.files[0];
+    file = e.target.files[0];
 
     if (file && file.size > 4194304) {
       alert("Le fichier dépasse 4Mo ");
       e.preventDefault();
       photo = false;
+      file = null;
     }
 
     if (file) {
@@ -318,19 +322,27 @@ inputs.forEach((input) => {
 
 const submitProjectForm = () => {
   if (title && category && photo == true) {
+    // const formData = new FormData();
+    // formData.append("image", file);
+    // formData.append("title", title);
+    // formData.append("category", category);
+    // console.log(formData);
     const projectData = {
-      photo,
+      file,
       title,
       category,
     };
     console.log(projectData);
     const payload = JSON.stringify(projectData);
     console.log(payload);
-    // fetch("http://localhost:5678/api/works", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: payload,
-    // });
+    fetch("http://localhost:5678/api/works", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+      body: payload,
+    });
   } else {
     alert("Veuillez remplir tous les champs");
   }
@@ -344,3 +356,5 @@ addProjectForm.addEventListener("submit", (e) => {
 console.log(token);
 
 window.addEventListener("load", fetchProjects);
+
+// FormData --> supp projectData et payload, changer body dans POST
