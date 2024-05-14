@@ -243,9 +243,11 @@ select.addEventListener("click", () => {
 });
 
 // ---------
-let title, category;
-let photo = false;
+let title = "";
+let category = "";
+let categoryId = "";
 let file = null;
+let photo = false;
 
 const validBtnChange = () => {
   if (title && photo && category) {
@@ -256,6 +258,7 @@ const validBtnChange = () => {
     validBtn.setAttribute("disabled", "disabled");
   }
 };
+
 const categoryChoice = () => {
   options.forEach((option) => {
     option.addEventListener("click", () => {
@@ -264,7 +267,15 @@ const categoryChoice = () => {
       menu.classList.remove("menu-open");
       validBtnBefore.classList.remove("before-hidden");
       categoryInput.value = option.innerText;
-      category = option.innerText;
+      category = option;
+
+      if (option.innerText == "Objets") {
+        categoryId = 1;
+      } else if (option.innerText == "Appartements") {
+        categoryId = 2;
+      } else if (option.innerText == "Hotels & restaurants") {
+        categoryId = 3;
+      }
       validBtnChange();
     });
   });
@@ -320,29 +331,34 @@ inputs.forEach((input) => {
   });
 });
 
+const addProjectForm = document.getElementById("addProjectForm");
+
 const submitProjectForm = () => {
   if (title && category && photo == true) {
-    // const formData = new FormData();
-    // formData.append("image", file);
-    // formData.append("title", title);
-    // formData.append("category", category);
-    // console.log(formData);
-    const projectData = {
-      file,
-      title,
-      category,
-    };
-    console.log(projectData);
-    const payload = JSON.stringify(projectData);
-    console.log(payload);
+    const formData = new FormData(addProjectForm);
+    formData.append("image", file);
+    formData.append("title", title);
+    formData.append("category", categoryId);
+
     fetch("http://localhost:5678/api/works", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        accept: "application/json",
         Authorization: "Bearer " + token,
       },
-      body: payload,
-    });
+      body: formData,
+    })
+      .then((res) => {
+        if (!res.ok) {
+          alert("Network response is not ok");
+        }
+        return res.json();
+      })
+      // .then((newWork) => {
+      // })
+      .catch((error) => {
+        console.error("error");
+      });
   } else {
     alert("Veuillez remplir tous les champs");
   }
@@ -351,10 +367,9 @@ const submitProjectForm = () => {
 addProjectForm.addEventListener("submit", (e) => {
   e.preventDefault();
   submitProjectForm();
+  closeModal(e);
 });
 
 console.log(token);
 
 window.addEventListener("load", fetchProjects);
-
-// FormData --> supp projectData et payload, changer body dans POST
