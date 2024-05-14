@@ -126,7 +126,9 @@ const openModal = (e) => {
 
 const closeModal = (e) => {
   if (modal === null) return;
-  e.preventDefault();
+  if (e) {
+    e.preventDefault();
+  }
   modal.style.visibility = "hidden";
   document.querySelector(".closeContainer").style.display = "none";
   modal.setAttribute("aria-hidden", "true");
@@ -174,9 +176,8 @@ const modalGalleryDisplay = () => {
       try {
         await deleteProject(projects[i].id);
         projectPhoto.remove();
-        console.log("tst");
       } catch (error) {
-        console.log("error");
+        // console.log("error");
       }
     });
 
@@ -196,6 +197,7 @@ const deleteProject = (id) => {
     .then((res) => {
       if (res.ok) {
         console.log("fichier supprimé");
+        closeModal();
       } else {
         alert(`Erreur ${res.status} lors de la tentative`);
       }
@@ -331,7 +333,22 @@ inputs.forEach((input) => {
   });
 });
 
-const addProjectForm = document.getElementById("addProjectForm");
+const addNewWork = (temporaryWork) => {
+  const figure = document.createElement("figure");
+  figure.id = temporaryWork.id;
+
+  const img = document.createElement("img");
+  img.src = temporaryWork.imageUrl;
+  img.alt = temporaryWork.title;
+
+  const figcaption = document.createElement("figcaption");
+  figcaption.textContent = temporaryWork.title;
+
+  figure.appendChild(img);
+  figure.appendChild(figcaption);
+
+  gallery.appendChild(figure);
+};
 
 const submitProjectForm = () => {
   if (title && category && photo == true) {
@@ -354,8 +371,9 @@ const submitProjectForm = () => {
         }
         return res.json();
       })
-      // .then((newWork) => {
-      // })
+      .then((temporaryWork) => {
+        addNewWork(temporaryWork);
+      })
       .catch((error) => {
         console.error("error");
       });
@@ -369,7 +387,5 @@ addProjectForm.addEventListener("submit", (e) => {
   submitProjectForm();
   closeModal(e);
 });
-
-console.log(token);
 
 window.addEventListener("load", fetchProjects);
