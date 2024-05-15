@@ -89,7 +89,7 @@ hotelBtn.addEventListener("click", () => {
   }
 });
 
-// ----------------- Log  -----------
+// ----------------- LOG  -----------
 
 const logBtn = document.getElementById("loginBtn");
 const editGallery = document.querySelector(".modifLog");
@@ -97,7 +97,6 @@ const editGallery = document.querySelector(".modifLog");
 function edit() {
   if (token) {
     logBtn.textContent = "logout";
-    logBtn.style.cursor = "pointer";
 
     document.querySelector(".black").style.visibility = "visible";
     editGallery.style.display = "block";
@@ -106,7 +105,7 @@ function edit() {
 }
 edit();
 
-// ------------- Modal ------------
+// ------------- MODAL ------------
 let modal = null;
 
 const openModal = (e) => {
@@ -153,7 +152,7 @@ window.addEventListener("keydown", (e) => {
   }
 });
 
-// -------------------------------------------------------
+// ------------------ AFFICHAGE GALLERY MODAL + DELETE ---------------------------
 
 const modalGalleryDisplay = () => {
   const galleryContainer = document.querySelector(".galleryContainer");
@@ -177,7 +176,7 @@ const modalGalleryDisplay = () => {
         await deleteProject(projects[i].id);
         projectPhoto.remove();
       } catch (error) {
-        // console.log("error");
+        console.log("error");
       }
     });
 
@@ -197,7 +196,7 @@ const deleteProject = (id) => {
     .then((res) => {
       if (res.ok) {
         console.log("fichier supprimé");
-        closeModal();
+        // closeModal();
       } else {
         alert(`Erreur ${res.status} lors de la tentative`);
       }
@@ -244,7 +243,8 @@ select.addEventListener("click", () => {
   validBtnBefore.classList.toggle("before-hidden");
 });
 
-// ---------
+// --------- ADD PROJECT ---------
+
 let title = "";
 let category = "";
 let categoryId = "";
