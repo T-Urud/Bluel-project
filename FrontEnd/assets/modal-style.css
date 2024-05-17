@@ -50,7 +50,8 @@ height: 1px;
 background: rgb(179, 179, 179);
 bottom: -5%;
 }
-aside h2{
+.modalV1,
+.modalV2 h2{
   text-align: center;
 }
 #modalBtn{

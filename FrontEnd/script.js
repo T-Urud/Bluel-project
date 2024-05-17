@@ -6,17 +6,17 @@ async function fetchProjects() {
   await fetch("http://localhost:5678/api/works").then((res) =>
     res.json().then((data) => (projects = data))
   );
-  console.log(projects);
-  projectsDisplay();
+  projectsDisplay(projects);
   modalGalleryDisplay();
 }
 
-function projectsDisplay() {
-  for (let i = 0; i < projects.length; i++) {
+function projectsDisplay(projectsArray) {
+  gallery.innerHTML = "";
+  for (let i = 0; i < projectsArray.length; i++) {
     gallery.innerHTML += `
-      <figure>
-        <img src="${projects[i].imageUrl}" alt=${projects[i].title}>
-        <figcaption>${projects[i].title}</figcaption>
+      <figure data-project="${projectsArray[i].id}">
+        <img src="${projectsArray[i].imageUrl}" alt=${projectsArray[i].title}>
+        <figcaption>${projectsArray[i].title}</figcaption>
       </figure>
     `;
   }
@@ -41,52 +41,28 @@ filterBtns.forEach((button) => {
 
 allBtn.addEventListener("click", () => {
   gallery.innerHTML = "";
-  projectsDisplay();
+  projectsDisplay(projects);
 });
 
 objectBtn.addEventListener("click", () => {
   const objectsProject = projects.filter((project) => {
     return project.category.id == 1;
   });
-  gallery.innerHTML = "";
-  for (let i = 0; i < objectsProject.length; i++) {
-    gallery.innerHTML += `
-      <figure>
-        <img src="${objectsProject[i].imageUrl}" alt=${objectsProject[i].title}>
-        <figcaption>${objectsProject[i].title}</figcaption>
-      </figure>
-    `;
-  }
+  projectsDisplay(objectsProject);
 });
 
 flatBtn.addEventListener("click", () => {
   const flatsProject = projects.filter((project) => {
     return project.category.id == 2;
   });
-  gallery.innerHTML = "";
-  for (let i = 0; i < flatsProject.length; i++) {
-    gallery.innerHTML += `
-      <figure>
-        <img src="${flatsProject[i].imageUrl}" alt=${flatsProject[i].title}>
-        <figcaption>${flatsProject[i].title}</figcaption>
-      </figure>
-    `;
-  }
+  projectsDisplay(flatsProject);
 });
 
 hotelBtn.addEventListener("click", () => {
   const hotelsProject = projects.filter((project) => {
     return project.category.id == 3;
   });
-  gallery.innerHTML = "";
-  for (let i = 0; i < hotelsProject.length; i++) {
-    gallery.innerHTML += `
-      <figure>
-        <img src="${hotelsProject[i].imageUrl}" alt=${hotelsProject[i].title}>
-        <figcaption>${hotelsProject[i].title}</figcaption>
-      </figure>
-    `;
-  }
+  projectsDisplay(hotelsProject);
 });
 
 // ----------------- LOG  -----------
@@ -97,6 +73,10 @@ const editGallery = document.querySelector(".modifLog");
 function edit() {
   if (token) {
     logBtn.textContent = "logout";
+    logBtn.addEventListener("click", () => {
+      sessionStorage.removeItem("authToken");
+      document.location.reload();
+    });
 
     document.querySelector(".black").style.visibility = "visible";
     editGallery.style.display = "block";
@@ -175,8 +155,11 @@ const modalGalleryDisplay = () => {
       try {
         await deleteProject(projects[i].id);
         projectPhoto.remove();
+        document
+          .querySelector(`figure[data-project="${projects[i.id]}"]`)
+          .remove();
       } catch (error) {
-        console.log("error");
+        console.error("error");
       }
     });
 
@@ -195,8 +178,7 @@ const deleteProject = (id) => {
   })
     .then((res) => {
       if (res.ok) {
-        console.log("fichier supprimé");
-        // closeModal();
+        console.info("fichier supprimé");
       } else {
         alert(`Erreur ${res.status} lors de la tentative`);
       }

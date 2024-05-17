@@ -12,7 +12,7 @@ const validateEmail = (value) => {
 const emailChecker = (value) => {
   if (!validateEmail(value)) {
     emailInput.classList.add("error");
-    email = null;
+    email = false;
   } else {
     email = value;
     emailInput.classList.remove("error");
@@ -21,10 +21,13 @@ const emailChecker = (value) => {
 
 const passwordChecker = (value) => {
   password = value;
-  console.log(password);
 };
 
 const submitForm = () => {
+  if (email === false) {
+    alert("Email invalide");
+    return;
+  }
   if (email && password) {
     const userData = {
       email,
@@ -32,7 +35,6 @@ const submitForm = () => {
     };
     // Création de la charge utile au format JSON
     const chargeUtile = JSON.stringify(userData);
-    console.log(chargeUtile);
     // Appel de la fonction fetch avec toutes les informations nécessaires
     fetch("http://localhost:5678/api/users/login", {
       method: "POST",
@@ -41,10 +43,9 @@ const submitForm = () => {
     })
       .then((res) => {
         if (!res.ok) {
-          alert("Erreur");
+          alert("Identifiant ou mot de passe incorrect");
         } else {
           res.json().then((data) => {
-            console.log(data);
             const token = data.token;
             sessionStorage.setItem("authToken", token);
             window.location.href = "index.html";
