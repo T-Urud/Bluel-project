@@ -367,7 +367,6 @@ const submitProjectForm = () => {
 addProjectForm.addEventListener("submit", (e) => {
   e.preventDefault();
   submitProjectForm();
-  closeModal(e);
 });
 
 window.addEventListener("load", fetchProjects);
