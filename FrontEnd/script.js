@@ -156,7 +156,7 @@ const modalGalleryDisplay = () => {
         await deleteProject(projects[i].id);
         projectPhoto.remove();
         document
-          .querySelector(`figure[data-project="${projects[i.id]}"]`)
+          .querySelector(`figure[data-project="${projects[i].id}"]`)
           .remove();
       } catch (error) {
         console.error("error");
