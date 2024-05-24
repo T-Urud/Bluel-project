@@ -7,21 +7,23 @@ async function fetchProjects() {
     res.json().then((data) => (projects = data))
   );
   projectsDisplay(projects);
-  modalGalleryDisplay();
+
+  if (token) {
+    modalGalleryDisplay();
+  }
 }
 
 function projectsDisplay(projectsArray) {
   gallery.innerHTML = "";
   for (let i = 0; i < projectsArray.length; i++) {
     gallery.innerHTML += `
-      <figure data-project="${projectsArray[i].id}">
+      <figure data-project="${projectsArray[i].id}" data-category="${projectsArray[i].categoryId}">
         <img src="${projectsArray[i].imageUrl}" alt=${projectsArray[i].title}>
         <figcaption>${projectsArray[i].title}</figcaption>
       </figure>
     `;
   }
 }
-projectsDisplay(projects);
 
 // ----- BTN -----
 
@@ -31,40 +33,56 @@ const flatBtn = document.getElementById("flats");
 const hotelBtn = document.getElementById("hotel&Resto");
 const filterBtns = document.querySelectorAll(".filterBtn");
 
-// avoir effet hover qui reste quand on click le btn
-filterBtns.forEach((button) => {
-  button.addEventListener("click", () => {
-    document.querySelector(".active")?.classList.remove("active");
-    button.classList.add("active");
+async function fetchCategories() {
+  try {
+    const response = await fetch("http://localhost:5678/api/categories");
+    const categories = await response.json();
+    console.log(categories);
+    buttonsDisplay(categories);
+    categoryChoice(categories);
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+  }
+}
+
+function buttonsDisplay(categories) {
+  const btnContainer = document.querySelector(".btnContainer");
+  btnContainer.innerHTML += `
+    <button class="filterBtn" id="all">Tous</button>
+  `;
+  categories.forEach((category) => {
+    btnContainer.innerHTML += `
+      <button class="filterBtn" id="${category.id}">${category.name}</button>
+    `;
   });
-});
+  addEventListenersToButtons();
+}
 
-allBtn.addEventListener("click", () => {
-  gallery.innerHTML = "";
-  projectsDisplay(projects);
-});
-
-objectBtn.addEventListener("click", () => {
-  const objectsProject = projects.filter((project) => {
-    return project.category.id == 1;
+function addEventListenersToButtons() {
+  const buttons = document.querySelectorAll(".filterBtn");
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      CategoryClick(button.id);
+      // avoir effet hover qui reste quand on click le btn
+      document.querySelector(".active")?.classList.remove("active");
+      button.classList.add("active");
+    });
   });
-  projectsDisplay(objectsProject);
-});
+}
 
-flatBtn.addEventListener("click", () => {
-  const flatsProject = projects.filter((project) => {
-    return project.category.id == 2;
-  });
-  projectsDisplay(flatsProject);
-});
-
-hotelBtn.addEventListener("click", () => {
-  const hotelsProject = projects.filter((project) => {
-    return project.category.id == 3;
-  });
-  projectsDisplay(hotelsProject);
-});
-
+function CategoryClick(categoryId) {
+  if (categoryId === "all") {
+    projectsDisplay(projects);
+  } else {
+    const filteredProjects = projects.filter(
+      (project) => project.categoryId.toString() === categoryId
+    );
+    projectsDisplay(filteredProjects);
+  }
+}
+window.onload = () => {
+  fetchCategories();
+};
 // ----------------- LOG  -----------
 
 const logBtn = document.getElementById("loginBtn");
@@ -228,13 +246,12 @@ select.addEventListener("click", () => {
 // --------- ADD PROJECT ---------
 
 let title = "";
-let category = "";
 let categoryId = "";
 let file = null;
 let photo = false;
 
 const validBtnChange = () => {
-  if (title && photo && category) {
+  if (title && photo && categoryId) {
     validBtn.removeAttribute("disabled");
     validBtn.style.cursor = "pointer";
     validBtn.style.background = "#1D6154";
@@ -243,41 +260,45 @@ const validBtnChange = () => {
   }
 };
 
-const categoryChoice = () => {
-  options.forEach((option) => {
+const categoryChoice = (categories) => {
+  categories.forEach((category) => {
+    const option = document.createElement("li");
+    option.textContent = category.name;
     option.addEventListener("click", () => {
-      selected.innerText = option.innerText;
+      selected.innerText = category.name;
       caret.classList.remove("caret-rotate");
       menu.classList.remove("menu-open");
       validBtnBefore.classList.remove("before-hidden");
-      categoryInput.value = option.innerText;
-      category = option;
+      categoryInput.value = category.name;
+      categoryId = category.id;
 
-      if (option.innerText == "Objets") {
-        categoryId = 1;
-      } else if (option.innerText == "Appartements") {
-        categoryId = 2;
-      } else if (option.innerText == "Hotels & restaurants") {
-        categoryId = 3;
-      }
       validBtnChange();
     });
+    menu.appendChild(option);
   });
 };
-categoryChoice();
-
 const uploadPhoto = () => {
+  const validFormat = ["image/jpeg", "image/png"];
   fileInput.addEventListener("change", (e) => {
     file = e.target.files[0];
 
-    if (file && file.size > 4194304) {
-      alert("Le fichier dépasse 4Mo ");
-      e.preventDefault();
-      photo = false;
-      file = null;
-    }
-
     if (file) {
+      if (file.size > 4194304) {
+        alert("Le fichier dépasse 4Mo ");
+        e.preventDefault();
+        photo = false;
+        file = null;
+        return;
+      }
+
+      if (!validFormat.includes(file.type)) {
+        alert("Le fichier n'est pas une image valide");
+        e.preventDefault();
+        photo = false;
+        file = null;
+        return;
+      }
+
       const reader = new FileReader();
       reader.onload = (e) => {
         previewImage.src = e.target.result;
@@ -333,7 +354,7 @@ const addNewWork = (temporaryWork) => {
 };
 
 const submitProjectForm = () => {
-  if (title && category && photo == true) {
+  if (title && categoryId && photo == true) {
     const formData = new FormData(addProjectForm);
     formData.append("image", file);
     formData.append("title", title);
