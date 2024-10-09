@@ -1,0 +1,34 @@
+{
+  "builds": [
+    {
+      "src": "backend/server.js",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": [
+          "backend/config/**",
+          "backend/controllers/**",
+          "backend/images/**",
+          "backend/middlewares/**",
+          "backend/models/**",
+          "backend/routes/**",
+          "backend/database.sqlite",
+          "backend/.env"
+        ]
+      }
+    },
+    {
+      "src": "frontend/**/*",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "backend/server.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "frontend/$1"
+    }
+  ]
+}
